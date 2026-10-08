@@ -1,78 +1,60 @@
 import csv
 import os
 
-file = "implementasi.csv"
-
-def clear():
-    os.system("cls")
+file = os.path.join(os.path.dirname(__file__), "implementasi.csv")
 
 def lihat():
-    clear()
     print("=== DATA BARANG ===")
-
-    with open(file, "r") as f:
+    if not os.path.exists(file):
+        print("File CSV tidak ditemukan!")
+        input("\nEnter untuk kembali...")
+        return
+    with open(file, "r", newline="") as f:
         reader = csv.reader(f)
+
         for row in reader:
             if row:
-                print(row)
-
+                print("ID Barang   :", row[0])
+                print("Nama Barang :", row[1])
+                print("Harga       :", row[2])
+                print("Stok        :", row[3])
+                print()
     input("\nEnter untuk kembali...")
 
+
 def tambah():
-    clear()
     print("=== TAMBAH BARANG ===")
 
-    id = input("ID Barang   : ")
+    id_barang = input("ID Barang   : ")
     nama = input("Nama Barang : ")
     harga = input("Harga       : ")
     stok = input("Stok        : ")
 
     with open(file, "a", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([id, nama, harga, stok])
+        writer.writerow([id_barang, nama, harga, stok])
 
-    print("Data berhasil ditambahkan.")
+    print("\nData berhasil ditambahkan!")
     input("\nEnter untuk kembali...")
 
-def hapus():
-    clear()
-    print("=== HAPUS BARANG ===")
-
-    nomor = input("Masukkan ID barang: ")
-    data = []
-
-    with open(file, "r") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if row and row[0] != nomor:
-                data.append(row)
-
-    with open(file, "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerows(data)
-
-    print("Data berhasil dihapus.")
-    input("\nEnter untuk kembali...")
 
 while True:
-    clear()
-    print("=== SISTEM INVENTARIS ===")
+    print("\n=== SISTEM INVENTARIS ===")
     print("1. Lihat Barang")
     print("2. Tambah Barang")
-    print("3. Hapus Barang")
-    print("4. Keluar")
+    print("3. Keluar")
 
     pilihan = input("Pilih menu: ")
-
+    
     if pilihan == "1":
         lihat()
     elif pilihan == "2":
         tambah()
     elif pilihan == "3":
-        hapus()
-    elif pilihan == "4":
+        print("Terima kasih telah menggunakan sistem inventaris.")
         break
     else:
         print("Pilihan tidak valid.")
         input("\nEnter untuk kembali...")
+
 
